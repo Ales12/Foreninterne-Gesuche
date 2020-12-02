@@ -135,7 +135,7 @@ function gesuche_install()
 	<table class="tborder">
 		<tr><td class="thead">Menü</td></tr>
 		<tr><td class="trow1"><a href="misc.php?action=wantedadd">Internes Gesuch einreichen</a></td></tr>
-		<tr><td class="trow2"><a href="misc.php?action=wanted">Internegesuche anzeigen</a></td></tr>
+		<tr><td class="trow2"><a href="misc.php?action=wantedshow">Internegesuche anzeigen</a></td></tr>
 		<tr><td class="trow1"><a href="misc.php?action=wantedshowown">eigene Gesuche anzeigen</a></td></tr>
 	</table>
 </td>'),
@@ -155,15 +155,16 @@ function gesuche_install()
 </head>
 <body>
 {$header}
-<table width="100%" border="0" align="center">
+<table border="0" cellspacing="{$theme[\'borderwidth\']}" cellpadding="{$theme[\'tablespace\']}" class="tborder">
 <tr>	
 {$forenintern_menu}
 <td valign="top">
 <table width="100%">
-<tr><td class="thead">Foreninterne Gesuche</td></tr>
-<tr><td class="trow1">
+	<tr><td class="thead"><h1>Foreninterne Gesuche</h1>
+		</td></tr>
+<tr><td class="trow1"><div class="wanted_show">
 	{$wanted_show_bit_user}
-	</td>
+	</div>	</td>
 </tr>
 </table>
 </td>
@@ -270,7 +271,7 @@ function gesuche_install()
     $insert_array = array(
         'title' => 'wanted_new_alert',
         'template' => $db->escape_string('<div class="pm_alert">
-	<strong>Es gibt neue <b>Foreninterne Gesuche</b>. <a href="misc.php?action=wanted">Hier</a> kannst du es dir ansehen. {$wanted_read}</strong>
+	<strong>Es gibt neue <b>Foreninterne Gesuche</b>. <a href="misc.php?action=wantedshow">Hier</a> kannst du es dir ansehen. {$wanted_read}</strong>
 </div>
 <br />'),
         'sid' => '-1',
@@ -413,8 +414,7 @@ function wanted_add()
 
 
             if (isset($_POST['wanted'])) {
-                $uid = $mybb->user['uid'];#
-                $title = $_POST['w_title'];
+                $uid = $mybb->user['uid'];
                 $wanted = $_POST['w_wanted'];
                 $postfre = $_POST['w_postfre'];
                 $relation = $_POST['w_relation'];
@@ -425,7 +425,6 @@ function wanted_add()
                 $new_record = array(
                     "type" => "wanted",
                     "uid" => $db->escape_string ($uid),
-                    "w_title" => $db->escape_string($title),
                     "w_wanted" => $db->escape_string ($wanted),
                     "w_relation" => $db->escape_string ($relation),
                     "w_postfre" => $db->escape_string ($postfre),
@@ -436,7 +435,7 @@ function wanted_add()
 
                 $db->insert_query ("gesuche", $new_record);
                 $db->query("UPDATE ".TABLE_PREFIX."users SET w_seen ='0'");
-                redirect ("misc.php?action=wanted");
+                redirect ("misc.php?action=wantedshow");
             }
             //menü
             eval("\$forenintern_menu = \"" . $templates->get ("wanted_menu") . "\";");
@@ -453,25 +452,22 @@ function wanted_show()
     global $db, $mybb, $templates, $lang, $header, $headerinclude, $footer, $page, $uid, $wanted_show_bit, $altbg, $pmhandler, $user, $w_wanted, $w_job, $w_relation, $w_disc;
     require_once MYBB_ROOT . "inc/datahandlers/pm.php";
     $pmhandler = new PMDataHandler();
-    require_once MYBB_ROOT."inc/class_parser.php";;
+    require_once MYBB_ROOT."inc/class_parser.php";
     $parser = new postParser;
 
+    $options = array(
+        "allow_html" => 1,
+        "allow_mycode" => 1,
+        "allow_smilies" => 1,
+        "allow_imgcode" => $mybb->settings['userpages_images_active'],
+        "filter_badwords" => $mybb->settings['userpages_badwords_active'],
+        "nl2br" => 1,
+        "allow_videocode" => $mybb->settings['userpages_videos_active']
+    );
 
-    if ($mybb->get_input('action') == 'wanted') {
-//Optionen erlauben. Ermöglicht ohne html Zeilenumbrüche und Co
-        $options = array(
-            "allow_html" => 1,
-            "allow_mycode" => 1,
-            "allow_smilies" => 1,
-            "allow_imgcode" => 1,
-            "filter_badwords" => 0,
-            "nl2br" => 1,
-            "allow_videocode" => 0
-        );
+    add_breadcrumb('Foreninterne Gesuche', "misc.php?action=wantedshow");
 
-        add_breadcrumb('Foreninterne Gesuche', "misc.php?action=wanted");
-
-
+    if ($mybb->get_input('action') == 'wantedshow') {
         $select = $db->query("SELECT *
         FROM " . TABLE_PREFIX . "gesuche g
         LEFT JOIN " . TABLE_PREFIX . "users u
@@ -490,17 +486,13 @@ function wanted_show()
             $avatar = "";
             $disc = "";
             $postfre = "";
-            $title = "";
-
-
-            $title = $row['w_title'];
 
             $uid = $row['uid'];
-            if ($mybb->usergroup['canmodcp'] == 1 OR $mybb->usergroup['canadmincp'] == 1 OR $mybb->user['uid'] == $row['uid']) {
-                $delete = "<a href='misc.php?action=wanted&del=$row[geid]' title='Löschen'><i class=\"fas fa-eraser\"></i></a>";
+            if ($mybb->user['modcp'] == 1 OR $mybb->user['admincp'] == 1 OR $mybb->user['uid'] == $row['uid']) {
+                $delete = "<a href='misc.php?action=wantedshow&del=$row[geid]' title='Löschen'><i class=\"fas fa-eraser\"></i></a>";
             }
             if ($mybb->user['uid'] != 0) {
-                $ueber = "<a href='misc.php?action=wanted&ueber=$row[geid]' title='Anfragen'><i class=\"fas fa-envelope-open-text\"></i> </a>";
+                $ueber = "<a href='misc.php?action=wantedshow&ueber=$row[geid]' title='Anfragen'><i class=\"fas fa-envelope-open-text\"></i> </a>";
             } else {
                 $ueber = "Keine Bereichtung";
             }
@@ -519,6 +511,7 @@ function wanted_show()
             if ($row['w_disc'] != NULL) {
                 $row['w_disc'] = $parser->parse_message($row['w_disc'], $options);
                 $disc = "<div class=\"gesuchInfobox\">{$row['w_disc']}</div>";
+
             }
 
             if ($row['w_avatar'] != NULL) {
@@ -530,7 +523,7 @@ function wanted_show()
         $del = $mybb->input['del'];
         if ($del) {
             $db->delete_query("gesuche", "geid = '$del'");
-            redirect("misc.php?action=wanted");
+            redirect("misc.php?action=wantedshow");
         }
         $uid = $mybb->user['uid'];
 
@@ -573,23 +566,24 @@ function wanted_show()
 }
 function wanted_show_own()
 {
-    global $db, $mybb, $templates, $lang, $header, $headerinclude, $footer, $page, $uid, $wanted_show_bit, $altbg, $pmhandler, $user, $w_wanted, $w_job, $w_relation, $w_disc, $parser, $options;
-
-    require_once MYBB_ROOT."inc/class_parser.php";;
+    global $db, $mybb, $templates, $lang, $header, $headerinclude, $footer, $page, $uid, $wanted_show_bit, $altbg, $pmhandler, $user, $w_wanted, $w_job, $w_relation, $w_disc;
+    require_once MYBB_ROOT."inc/class_parser.php";
     $parser = new postParser;
+
+    add_breadcrumb('eigene Foreninterne Gesuche', "misc.php?action=wantedshow");
+
     $options = array(
         "allow_html" => 1,
         "allow_mycode" => 1,
         "allow_smilies" => 1,
-        "allow_imgcode" => 1,
-        "filter_badwords" => 0,
+        "allow_imgcode" => $mybb->settings['userpages_images_active'],
+        "filter_badwords" => $mybb->settings['userpages_badwords_active'],
         "nl2br" => 1,
-        "allow_videocode" => 0
+        "allow_videocode" => $mybb->settings['userpages_videos_active']
     );
 
-
     if ($mybb->get_input('action') == 'wantedshowown') {
-        add_breadcrumb('eigene Foreninterne Gesuche', "misc.php?action=wantedshowown");
+
         //welcher user ist online
         $this_user = intval($mybb->user['uid']);
 
@@ -629,7 +623,7 @@ function wanted_show_own()
 
             $uid = $row['uid'];
 
-            $delete = "<a href='misc.php?action=wanted&del=$row[geid]' title='Löschen'><i class=\"fas fa-eraser\"></i></a>";
+            $delete = "<a href='misc.php?action=wantedshow&del=$row[geid]' title='Löschen'><i class=\"fas fa-eraser\"></i></a>";
             eval("\$edit = \"" . $templates->get ("wanted_show_edit") . "\";");
 
             //Hier sind alle Variabeln, welche nur erscheinen, wenn etwas in der Datenbank steht. Dies bedeutet, dass nicht alle Automatisch angezeigt werden
@@ -659,7 +653,7 @@ function wanted_show_own()
         $del = $mybb->input['del'];
         if ($del) {
             $db->delete_query("gesuche", "geid = '$del'");
-            redirect("misc.php?action=wanted");
+            redirect("misc.php?action=wantedshow");
         }
         $uid = $mybb->user['uid'];
 
@@ -670,7 +664,7 @@ function wanted_show_own()
             $w_postfre = $mybb->input['w_postfre'];
             $w_relation = $mybb->input['w_relation'];
             $w_disc = $db->escape_string($mybb->input['w_disc']);
-            $w_avatar = $mybb->input['w_avatar'];
+            $w_avatar = $mybb->input['w_disc'];
 
             $db->query("UPDATE ".TABLE_PREFIX."gesuche SET w_wanted ='".$w_wanted."', w_postfre = '".$w_postfre."', w_relation = '".$w_relation."', w_disc = '".$w_disc."',  w_avatar = '".$w_avatar."' WHERE geid = '".$getgeid."'");
 
