@@ -176,6 +176,8 @@ function gesuche_install()
 <div id="popinfo$row[geid]" class="infopop">
   <div class="pop"><form method="post" action=""><input type=\'hidden\' value=\'{$row[\'geid\']}\' name=\'getgeid\'>
 <table border="0" cellspacing="5" cellpadding="{$theme[\'tablespace\']}" class="tborder" style="margin:auto;" width="100%">
+				<tr><td class="trow1" width="50%"><strong>{$lang->forenwanted_status}</strong>
+	<div class="smalltext">{$lang->forenwanted_status_desc}</div></td><td width="400px" class="trow2"><input id="w_status" name="w_status" type="text" class="textbox"  style="width: 95%"  value="{$row[\'w_status\']}" /></td></tr>
 	<tr><td class="trow1"><strong>{$lang->forenwanted_title}</strong>
 	<div class="smalltext">{$lang->forenwanted_title_desc}</div></td></td>
 	<td  width="50%" class="trow2"><input id="w_title" name="w_title" type="text" class="textbox"  style="width: 95%" value="{$row[\'w_title\']}" /></td></tr>
