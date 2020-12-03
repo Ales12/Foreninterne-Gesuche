@@ -152,12 +152,12 @@ function gesuche_install()
 
     $insert_array = array(
         'title' => 'forenwanted_show_bit',
-        'template' => $db->escape_string('<div class="forenwanted_show_bit">
+        'template' => $db->escape_string('<div class="wanted_show_bit">
 	{$title}
 	<div class="gesuchUntertitel">Gesucht wird</div>
 	<div class="gesuchName">{$forenwanted}</div>
 	<div class="gesuchUntertitel">von {$user}</div>
-
+	<div class="gesuchInfo"><b>{$lang->forenwanted_status}</b> {$status}</div>
 {$relationen}
 {$postfre}
 {$disc}
