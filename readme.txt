@@ -27,6 +27,9 @@ w_disc -> varchar in mediumtext
 /***
 Templates
 ***/
+
+Gelöschtes Template: wanted_welcome
+
 Umbenennen und mit Sprachvariabeln
 
 
