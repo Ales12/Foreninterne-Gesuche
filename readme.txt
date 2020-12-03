@@ -5,7 +5,7 @@ Es kam die ein oder andere Änderung hinzu.
 
 #wichtiges:
 - Account Switcher muss Installiert sein
-- kann über misc.php?action=wanted aufgerufen sein
+- kann über misc.php?action=forenwanted aufgerufen sein
 
 /***
 Datenbankänderungen
