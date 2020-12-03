@@ -68,8 +68,10 @@ function gesuche_install()
 <form id="forenwanted" method="post" action="misc.php?action=forenwantedadd">
 
 		<table width="90%">
+			<tr><td class="trow1"><strong>{$lang->forenwanted_title}</strong>
+	<div class="smalltext">{$lang->forenwanted_title_desc}</div></td><td width="400px" class="trow2"><input id="w_title" name="w_title" type="text" class="textbox"  style="width: 95%" /></td></tr>
 <tr><td class="trow1"><strong>{$lang->forenwanted_who}</strong>
-	<div class="smalltext">{$lang->forenwanted_who_desc}</div></td><td width="400px" class="trow2"><input id="w_wanted" name="w_anted" type="text" class="textbox"  style="width: 95%" /></td></tr>
+	<div class="smalltext">{$lang->forenwanted_who_desc}</div></td><td width="400px" class="trow2"><input id="w_wanted" name="w_wanted" type="text" class="textbox"  style="width: 95%" /></td></tr>
 			<tr><td class="trow1"><strong>{$lang->forenwanted_postfrequ}</strong>
 				<div class="smalltext">{$lang->forenwanted_postfrequ_desc}</div></td><td width="400px" class="trow2"><input id="w_postfre" name="w_postfre" type="text" class="textbox"  style="width: 95%" /></td></tr>
 <tr><td class="trow1"><strong>{$lang->forenwanted_rela}</strong>
@@ -128,7 +130,7 @@ function gesuche_install()
 {$forenintern_menu}
 <td valign="top">
 <table width="100%">
-	<tr><td class="thead"><strong>{$lang->forenwanted}</strong>
+	<tr><td class="thead"><strong>{$lang->forenwanted}</h1>
 		</td></tr>
 <tr><td class="trow1"><div class="forenwanted_show">
 	{$forenwanted_show_bit_user}
