@@ -24,9 +24,11 @@ $l['forenwanted_rela_desc'] = "In welcher Beziehung stehen dein und der gesuchte
 $l['forenwanted_story'] = "Was genau wird gesucht?";
 $l['forenwanted_story_desc'] = "Gebe hier alle weitere Informationen an, die du für wichtig hältst. Zum Beispiel <i>Alter, Beruf, Wohnort etc.</i>. Vergiss aber nicht, durch den Befehl br gewünschte Zeilenumbrüche einzufügen.";
 
-
 $l['forenwanted_ava'] = "Avatarwunsch";
 $l['forenwanted_ava_desc'] = "Hast du Avatarvorschläge? Dann füge es hier ein. Wird nicht angezeigt, wenn es nicht ausgefüllt wurde.";
+
+$l['forenwanted_status'] = "Gesuchsstatus";
+$l['forenwanted_status_desc'] = "Ist das Gesuche frei oder schon Reserviert?";
 
 
 // Sprachdateien in der PHP

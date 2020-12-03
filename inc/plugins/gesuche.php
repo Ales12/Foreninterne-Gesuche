@@ -510,6 +510,7 @@ function forenwanted()
             $avatar = "";
             $disc = "";
             $postfre = "";
+            $status = "";
 
             $uid = $row['uid'];
             if ($mybb->user['modcp'] == 1 OR $mybb->user['admincp'] == 1 OR $mybb->user['uid'] == $row['uid']) {
@@ -520,11 +521,12 @@ function forenwanted()
             } else {
                 $ueber = "Keine Bereichtung";
             }
-            
+
 
 
             //Hier sind alle Variabeln, welche nur erscheinen, wenn etwas in der Datenbank steht. Dies bedeutet, dass nicht alle Automatisch angezeigt werden
             $forenwanted = $row['w_wanted'];
+            $status = $row['w_status'];
 
             if ($row['w_title'] != NULL) {
                 $title = "<div class=\"gesucheTitle\">{$row['w_title']}</div>";
@@ -631,6 +633,7 @@ function forenwanted()
             $avatar = "";
             $disc = "";
             $postfre = "";
+            $status = "";
 
             $uid = $row['uid'];
 
@@ -639,6 +642,7 @@ function forenwanted()
 
             //Hier sind alle Variabeln, welche nur erscheinen, wenn etwas in der Datenbank steht. Dies bedeutet, dass nicht alle Automatisch angezeigt werden
             $forenwanted = $row['w_wanted'];
+            $status = $row['w_status'];
 
             if ($row['w_title'] != NULL) {
                 $title = "<div class=\"gesucheTitle\">{$row['w_title']}</div>";
@@ -656,6 +660,7 @@ function forenwanted()
                 $disc = "<div class=\"gesuchInfobox\">{$row['w_disc']}</div>";
 
             }
+
 
             if ($row['w_avatar'] != NULL) {
                 $avatar = "<div class=\"gesuchInfo\"><b>{$lang->forenwanted_ava}</b> {$row['w_avatar']}</div>";
@@ -675,7 +680,8 @@ function forenwanted()
         //Gesuche editieren
         if(isset($mybb->input['editforenwanted'])){
             $getgeid = $mybb->input['getgeid'];
-              $forenwanted = $mybb->input['w_wanted'];
+            $status = $mybb->input['w_status'];
+            $forenwanted = $mybb->input['w_wanted'];
             $title = $mybb->input['w_title'];
             $postfre = $mybb->input['w_postfre'];
             $relation = $mybb->input['w_relation'];
@@ -690,7 +696,7 @@ function forenwanted()
                 "w_postfre" => $db->escape_string ($postfre),
                 "w_disc" => $db->escape_string ($disc),
                 "w_avatar" => $db->escape_string($avatar),
-                "w_datum" => $db->escape_string($datum)
+                "w_status" => $db->escape_string($status)
             );
 
             $db->update_query("gesuche", $update_record, "geid='{$getgeid}'");
