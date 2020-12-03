@@ -384,9 +384,12 @@ function gesuche_deactivate()
 }
 
 function forenwanted_global(){
-    //Die Sprachdatei
+    
+    global $templates, $forenwanted_forenintern, $mybb, $lang ;
+	
+	//Die Sprachdatei
     $lang->load('forenwanted');
-    global $templates, $forenwanted_forenintern, $mybb ;
+	
     if($mybb->user['uid'] != '0' || $mybb->user['uid'] != ''){
         eval("\$forenwanted_forenintern = \"" . $templates->get ("forenwanted_menu") . "\";");
     }
