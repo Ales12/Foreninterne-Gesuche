@@ -17,7 +17,7 @@ Gelöschte Spalte:
 w_type
 
 Hinzugefügte Spalten:
-w_status (varchar) 
+w_status (varchar) Default frei
 w_title (varchar)
 
 geänderte Spalte:
