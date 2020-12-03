@@ -99,7 +99,7 @@ Umbenennen und mit Sprachvariabeln
 {$forenintern_menu}
 <td valign="top">
 <table width="100%">
-	<tr><td class="thead"><strong>{$lang->forenwanted}</h1>
+	<tr><td class="thead"><strong>{$lang->forenwanted}</strong>
 		</td></tr>
 <tr><td class="trow1"><div class="forenwanted_show">
 	{$forenwanted_show_bit_user}
